@@ -1,0 +1,107 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super easy reader</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+   <script src="js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-sm bg-light">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div  style="text-align: center;" class="d-flex align-items-center justify-content-center vh-100">
+        <div id="container">
+            <button onclick="generateText()" class="btn btn-outline-primary btn-lg" id="button">start</button>
+            <p id="WordPrint" style="font-size: 64px;"></p>
+        </div>
+        <div id="restartButton" style="display: none;" disabled="true">
+            <button onclick="generateText()" class="btn btn-outline-primary btn-lg" id="restartButton">restart</button>
+        </div>
+    </div>
+
+    <!--<div style = "text-align: center; font-size: 64px;" class="d-flex align-items-center justify-content-center vh-100">
+        <div id="container">
+
+        </div>
+    </div>-->
+
+
+
+</html>
+
+<script>
+    async function generateText(){
+        const container = document.getElementById("container");
+        const WordPrint = document.getElementById('WordPrint');
+        const button = document.getElementById('button');
+        const restartButton = document.getElementById('restartButton');
+
+        let wpm = 200;
+        let pausetime = 300;
+        let finishTime = 5000;
+
+        button.disabled = true;
+        button.style.display = "none";
+
+        restartButton.disabled = true;
+        restartButton.style.display = "none";
+
+        container.style.display = "block";
+
+        let input = localStorage.getItem("input");
+        if(input == "" || input == null){
+            WordPrint.textContent = "No text entered.";
+            container.appendChild(WordPrint);
+        }
+        else
+        {
+
+            //append period to the end for cases where the inputted text does not end with a "."
+            //this prevents a bug where the last word will be skipped if it does not end in a "."
+            if(input.charAt(input.length) != "."){ 
+                input += ".";
+            }
+            console.log(input);
+            let printedWord = "";
+            for(let i = 0; i < input.length; i++){
+                let char = input.charAt(i);
+                printedWord += char;
+                if(char == " " || char == "-" || char == "—" || char == "\n"){
+                    WordPrint.textContent = printedWord;
+                    container.appendChild(WordPrint);
+                    console.log(printedWord);
+                    await sleep(wpm);
+                    container.remove;
+                    printedWord = "";
+                }
+                if(char == "."){
+                    WordPrint.textContent = printedWord;
+                    container.appendChild(WordPrint);
+                    console.log(printedWord);
+                    await sleep(pausetime);
+                    container.remove;
+                    printedWord = "";
+                    i++; //skip the next char which should be a space.
+                }
+            }//end for
+        }
+        await sleep(finishTime);
+        container.style.display = "none";
+        restartButton.disabled = false;
+        restartButton.style.display = "block";
+        
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+</script>

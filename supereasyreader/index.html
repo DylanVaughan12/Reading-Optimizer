@@ -1,0 +1,41 @@
+<html>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super easy reader</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+   <script src="js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-light">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div style="text-align: center; font-size: 12px;">
+        <textarea name="input" rows = "10" cols = "200" id="input"></textarea>
+        <br>
+
+    </div>
+    <div  style="text-align: center;">
+        <button onclick="nextpage()" class="btn btn-outline-primary btn-lg" id="button">
+            submit
+        </button>
+    </div>
+
+
+</html>
+
+<script>
+    function nextpage(){
+        localStorage.setItem("input", document.getElementById("input").value);
+        window.location.href = "readtext.html";
+    }
+</script>
